@@ -2,6 +2,7 @@
 #include "pebble_app.h"
 #include "pebble_fonts.h"
 
+// 144x168
 
 #define MY_UUID { 0xAA, 0xF1, 0xE8, 0xBE, 0x89, 0x39, 0x48, 0x17, 0x80, 0xBE, 0x36, 0xA4, 0x11, 0x38, 0x55, 0x3B }
 PBL_APP_INFO(MY_UUID,
@@ -29,14 +30,17 @@ void draw_layer_image(Layer *me, GContext* ctx) {
   // are equal to the size of the bitmap--otherwise the image
   // will automatically tile. Which might be what *you* want.
 
+  PblTm tick_time;
+  get_time(&tick_time);
+
+  if ( ( tick_time.tm_sec % 2 ) == 0 ) {
   GRect destination = layer_get_frame(&invader1_image.layer.layer);
-
-  /*
-destination.origin.y = 5;
-  destination.origin.x = 5;
-*/
-
   graphics_draw_bitmap_in_rect(ctx, &invader1_image.bmp, destination);
+} else {
+	GRect destination = layer_get_frame(&invader2_image.layer.layer);
+  graphics_draw_bitmap_in_rect(ctx, &invader2_image.bmp, destination);
+  
+}
 
 }
 
@@ -69,7 +73,7 @@ void handle_init(AppContextRef ctx) {
   window_stack_push(&window, true /* Animated */);
   window_set_background_color(&window, GColorBlack);
 
-  text_layer_init(&timeLayer, GRect(29, 100, 144-40 /* width */, 168-54 /* height */));
+  text_layer_init(&timeLayer, GRect(29, 130, 144-40 /* width */, 168-130 /* height */));
   text_layer_set_text_color(&timeLayer, GColorWhite);
   text_layer_set_background_color(&timeLayer, GColorClear);
   text_layer_set_font(&timeLayer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
@@ -85,7 +89,7 @@ void handle_init(AppContextRef ctx) {
   bmp_init_container(RESOURCE_ID_INVADER1, &invader1_image);
   bmp_init_container(RESOURCE_ID_INVADER2, &invader2_image);
 
-  layer_init(&imageLayer, window.layer.frame);
+  layer_init(&imageLayer, GRect( 6, 6, 132, 96));
   imageLayer.update_proc = &draw_layer_image;
   layer_add_child(&window.layer, &imageLayer);
 
