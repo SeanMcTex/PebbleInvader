@@ -34,13 +34,12 @@ void draw_layer_image(Layer *me, GContext* ctx) {
   get_time(&tick_time);
 
   if ( ( tick_time.tm_sec % 2 ) == 0 ) {
-  GRect destination = layer_get_frame(&invader1_image.layer.layer);
-  graphics_draw_bitmap_in_rect(ctx, &invader1_image.bmp, destination);
-} else {
+	GRect destination = layer_get_frame(&invader1_image.layer.layer);
+	graphics_draw_bitmap_in_rect(ctx, &invader1_image.bmp, destination);
+  } else {
 	GRect destination = layer_get_frame(&invader2_image.layer.layer);
-  graphics_draw_bitmap_in_rect(ctx, &invader2_image.bmp, destination);
-  
-}
+	graphics_draw_bitmap_in_rect(ctx, &invader2_image.bmp, destination);
+  }
 
 }
 
